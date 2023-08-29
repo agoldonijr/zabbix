@@ -10,3 +10,7 @@ bash installPostgreSql.sh
 ## Install Zabbix Agent 2 
 
 bash installZabbixClientRHEL8.sh 
+
+## Basic Installation Zabbix Proxy
+
+bash installZabbixProxyRHEL8.sh
