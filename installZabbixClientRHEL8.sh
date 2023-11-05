@@ -15,3 +15,30 @@ dnf install -y zabbix-agent2 zabbix-agent2-plugin-postgresql > /dev/null 2>&1
 
 systemctl enable zabbix-agent2 --now
 systemctl status zabbix-aget2
+
+if [ -f /etc/zabbix/zabbix_agentd.conf ]; then
+
+    ARQ=/etc/zabbix/zabbix_agentd.conf
+
+elif [ -f /etc/zabbix/zabbix_agent2.conf ]; then
+    
+    ARQ=/etc/zabbix/zabbix_agent2.conf
+
+else
+
+    echo "Arquivo de configuracao nao encontrado"
+    exit 1
+
+fi 
+
+read -p "IP do servidor : " SERVER
+
+echo "Configurando arquivo $ARQ com o ip $SERVER" ...
+sleep 1	
+
+sed -i "s/Server=127.0.0.1/Server=$SERVER/g" $ARQ 
+sed -i "s/ServerActive=127.0.0.1/ServerActive=$SERVER/g" $ARQ
+sed -i "s/HostnameItem=system.hostname/HostnameItem=system.run[\/usr\/bin\/hostname -a]/g" $ARQ
+echo "Verifique se o arquivo foi configurado corretamente e reinicie o serviço"
+echo "systemctl restart zabbix-agent2"
+sleep 1
